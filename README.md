@@ -16,7 +16,7 @@ Install globally and use on the commandline:
 npm install -g blink1-status-hub
 
 # starts server on 127.0.0.1:4949
-blink-server
+blink1-server
 
 # starts server on port 127.0.0.1:080
 blink1-server 8080
