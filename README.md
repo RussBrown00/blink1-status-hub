@@ -5,7 +5,9 @@ Supports plug and unplug of blink(1) while server is running.
 
 Uses new `node-hid@0.5.0` so works with Node 4.x.
 
-This code base was based off of [node-blink1-server](https://www.npmjs.com/package/node-blink1-server). I wanted to build something that was geared more towards productivity enhancers vs just a play tool.
+This code base was based off of [node-blink1-server](https://www.npmjs.com/package/node-blink1-server). I wanted to build something that was geared more towards productivity enhancers vs just a play tool. I wrote this with the expectation that I would be performing most of my long running tasks on virtual machine. Running this on a Raspberry Pi or Beaglebone would also be a cool use.
+
+I use /dnd to show that I'm currently on a phone call (busy light) and I use /done and /fail for work tasks. The Blink(1) has 2 LEDs.
 
 ### Installation
 
@@ -66,10 +68,12 @@ getIP() {
 }
 
 alias blink-off="curl -s \"http://$(getIP vnic0):4949/clear\" > /dev/null"
+alias blink-clear="blink-off"
 alias blink-dnd="curl -s \"http://$(getIP vnic0):4949/dnd\" > /dev/null"
 alias blink-free="curl -s \"http://$(getIP vnic0):4949/free\" > /dev/null"
 alias blink-done="curl -s \"http://$(getIP vnic0):4949/done\" > /dev/null"
 alias blink-fail="curl -s \"http://$(getIP vnic0):4949/fail\" > /dev/null"
+```
 
 #### One of my virtual machines I run docker from
 ```
