@@ -1,13 +1,13 @@
 # blink1-status-hub
-HTTP REST API server in Node for blink(1) devices
+HTTP REST API server in Node for [blink(1)](https://blink1.thingm.com/) devices
 
-Supports plug and unplug of blink(1) while server is running.
+Supports plug and unplug of [blink(1)](https://blink1.thingm.com/) while server is running.
 
 Uses new `node-hid@0.5.0` so works with Node 4.x.
 
 This code base was based off of [node-blink1-server](https://www.npmjs.com/package/node-blink1-server). I wanted to build something that was geared more towards productivity enhancers vs just a play tool. I wrote this with the expectation that I would be performing most of my long running tasks on virtual machine. Running this on a Raspberry Pi or Beaglebone would also be a cool use.
 
-I use /dnd to show that I'm currently on a phone call (busy light) and I use /done and /fail for work tasks. The Blink(1) has 2 LEDs.
+I use `/dnd` to show that I'm currently on a phone call (busy light) and I use `/done` and `/fail` for work tasks. The [Blink(1)](https://blink1.thingm.com/) has 2 LEDs.
 
 ### Installation
 
