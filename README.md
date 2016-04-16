@@ -54,7 +54,7 @@ npm start 4949
     - `repeats` -- number of times to blink (default: 3)
 - `/dnd` -- Alias to `/` that defaults to turning the #2 LED red.
 - `/done` -- Alias to `/blink` that defaults to flashing the #1 LED green 4 times.
-- `/done` -- Alias to `/blink` that defaults to flashing the #1 LED pink 4 times.
+- `/fail` -- Alias to `/blink` that defaults to flashing the #1 LED pink 4 times.
 - `/free` -- Turns off just the #2 LED used for `/dnd`.
 
 ### My setup of choice
