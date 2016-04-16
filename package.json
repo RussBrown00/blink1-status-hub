@@ -1,0 +1,34 @@
+{
+  "name": "node-blink1-server",
+  "version": "0.1.3",
+  "description": "HTTP REST API server in Node for blink(1) devices",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/todbot/node-blink1-server.git"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "node main.js",
+	"dev": "./node_modules/supervisor/lib/cli-wrapper.js -w . -i node_modules -e js main.js"
+  },
+  "bin": {
+    "blink1-server": "./main.js"
+  },
+  "author": "Tod E. Kurt",
+  "license": "ISC",
+  "keywords": [
+    "blink(1)",
+    "blink1"
+  ],
+  "bugs": {
+    "url": "https://github.com/todbot/node-blink1-server/issues"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "node-blink1": "^0.2.1",
+    "node-hid": "^0.5.0",
+    "parse-color": "^1.0.0",
+    "supervisor": "^0.10.0"
+  }
+}
