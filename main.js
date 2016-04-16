@@ -12,10 +12,14 @@
 var Blink1 = require('node-blink1');
 var parsecolor = require('parse-color');
 var express = require('express');
+var getInterface = require('interface-addresses');
+
 var app = express();
+
 app.set('json spaces', 4);
 
 var port = 4949;
+var host = '127.0.0.1';
 
 var devices = Blink1.devices(); // returns array of serial numbers
 var blink1 = null;
@@ -51,7 +55,6 @@ var blink1Fade = function( millis, r, g, b, ledn ){
 };
 
 var blink1Blink = function( onoff, repeats, millis, r, g, b, ledn ) {
-    // console.log("blink1Blink:", onoff, repeats, millis, r, g, b, ledn );
     if( onoff ) {
         blink1Fade( millis/2, r, g, b, ledn );
     } else {
@@ -66,7 +69,7 @@ var blink1Blink = function( onoff, repeats, millis, r, g, b, ledn ) {
     }
 };
 
-app.get('/blink1', function(req, res) {
+app.get('/status', function(req, res) {
     blink1TryConnect();
     var response = {
         blink1Connected: blink1 !== null,
@@ -120,7 +123,7 @@ function runCommand(_hex, _time, _ledn, repeats, res) {
 app.get('/', function(req, res) {
 	runCommand(
 		req.query.rgb,
-		Number(req.query.time) || 1,
+		Number(req.query.time) || .3,
 		Number(req.query.ledn) || 0,
 		null,
 		res
@@ -130,7 +133,7 @@ app.get('/', function(req, res) {
 app.get('/blink', function(req, res) {
 	runCommand(
 		req.query.rgb,
-		Number(req.query.time) || 1,
+		Number(req.query.time) || .1,
 		Number(req.query.ledn) || 0,
 		Number(req.query.repeats) || Number(req.query.count) || 3,
 		res
@@ -138,7 +141,7 @@ app.get('/blink', function(req, res) {
 });
 
 app.get(/\/(off|clear)/, function(req, res) {
-	runCommand('#000000', 0, 2, null, res);
+	runCommand('#000000', .1, 0, null, res);
 });
 
 app.get('/free', function(req, res) {
@@ -165,13 +168,27 @@ app.get('/done', function(req, res) {
 	);
 });
 
+app.get('/fail', function(req, res) {
+	runCommand(
+		req.query.rgb || '#ff33cc',
+		Number(req.query.time) || .1,
+		Number(req.query.ledn) || 1,
+		Number(req.query.repeats) || Number(req.query.count) || 4,
+		res
+	);
+});
+
 // if we have args
-if( process.argv.length > 2 ) {
-    var p = Number(process.argv[2]);
-    port = (p) ? p : port;
+if (process.argv.length >= 2) {
+    port = Number(process.argv[2]) || port;
 }
 
-var server = app.listen(port, function() {
+if (process.argv.length >= 3) {
+    var ifc = process.argv[3] || 'en0';
+    host = getInterface()[ifc] || host;
+}
+
+var server = app.listen(port, host, function() {
     var host = server.address().address;
     var port = server.address().port;
     host = (host === '::' ) ? "localhost" : host;

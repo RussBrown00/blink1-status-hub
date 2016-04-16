@@ -11,14 +11,28 @@ This code base was based off of [node-blink1-server](https://www.npmjs.com/packa
 
 Install globally and use on the commandline:
 ```
-npm install -g node-blink1-server
-blink1-server 8754   # starts server on port 8754
+npm install -g blink1-status-hub
+
+# starts server on 127.0.0.1:4949
+blink-server
+
+# starts server on port 127.0.0.1:080
+blink1-server 8080
+
+# starts server on 4949 using en0's IP (osx)
+blink1-server 4949 en0
+
+# starts server on 4949 using eth0's IP (linux)
+blink1-server 4949 eth0
+
+# starts server running on local parallels VM host adapter
+blink1-server 4949 vnic0
 ```
 
 Or check out and use via npm:
 ```
-git clone https://github.com/todbot/node-blink1-server.git
-cd node-blink1-server
+git clone git@github.com:902Labs/blink1-status-hub.git
+cd blink1-status-hub
 npm install
 npm start 4949
 ```
@@ -38,16 +52,44 @@ npm start 4949
     - `repeats` -- number of times to blink (default: 3)
 - `/dnd` -- Alias to `/` that defaults to turning the #2 LED red.
 - `/done` -- Alias to `/blink` that defaults to flashing the #1 LED green 4 times.
+- `/done` -- Alias to `/blink` that defaults to flashing the #1 LED pink 4 times.
 - `/free` -- Turns off just the #2 LED used for `/dnd`.
 
-### How to use it?
+### My setup of choice
 
 I run this service on my host machine. My host and virtual machines all have aliases created in `~/.profile` that allow for quick execution
 
+#### My OSX Laptop/Parallels Host
 ```
-# Blink Server Commands
-alias blink-off="curl -s \"http://localhost:4949/clear\" > /dev/null"
-alias blink-dnd="curl -s \"http://localhost:4949/dnd\" > /dev/null"
-alias blink-free="curl -s \"http://localhost:4949/free\" > /dev/null"
-alias blink-done="curl -s \"http://localhost:4949/done\" > /dev/null"
+getIP() {
+	ifconfig $1 | awk '$1 == "inet" {print $2}'
+}
+
+alias blink-off="curl -s \"http://$(getIP vnic0):4949/clear\" > /dev/null"
+alias blink-dnd="curl -s \"http://$(getIP vnic0):4949/dnd\" > /dev/null"
+alias blink-free="curl -s \"http://$(getIP vnic0):4949/free\" > /dev/null"
+alias blink-done="curl -s \"http://$(getIP vnic0):4949/done\" > /dev/null"
+alias blink-fail="curl -s \"http://$(getIP vnic0):4949/fail\" > /dev/null"
+
+#### One of my virtual machines I run docker from
 ```
+HOSTIP="10.211.55.2"
+
+alias blink-off="curl -s \"http://$HOSTIP:4949/clear\" > /dev/null"
+alias blink-clear="blink-off"
+alias blink-dnd="curl -s \"http://$HOSTIP:4949/dnd\" > /dev/null"
+alias blink-free="curl -s \"http://$HOSTIP:4949/free\" > /dev/null"
+alias blink-done="curl -s \"http://$HOSTIP:4949/done\" > /dev/null"
+alias blink-done="curl -s \"http://$HOSTIP:4949/fail\" > /dev/null"
+```
+
+### How I use it
+
+```
+# simple example
+> sleep 5; blink-done
+
+# with error example
+> sleep 5 && cd /imaginary-folder && blink-done || blink-fail
+```
+

@@ -1,34 +1,39 @@
 {
-  "name": "node-blink1-server",
-  "version": "0.1.3",
+  "name": "blink1-status-hub",
+  "version": "0.1.0",
   "description": "HTTP REST API server in Node for blink(1) devices",
   "repository": {
     "type": "git",
-    "url": "git://github.com/todbot/node-blink1-server.git"
+    "url": "git@github.com:902Labs/blink1-status-hub.git"
   },
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "node main.js",
-	"dev": "./node_modules/supervisor/lib/cli-wrapper.js -w . -i node_modules -e js main.js"
+    "start": "node main.js",
+    "dev": "./node_modules/supervisor/lib/cli-wrapper.js -w . -i node_modules -e js main.js"
   },
   "bin": {
     "blink1-server": "./main.js"
   },
-  "author": "Tod E. Kurt",
+  "author": "Russell Brown",
   "license": "ISC",
   "keywords": [
     "blink(1)",
-    "blink1"
+    "blink1",
+    "productivity",
+    "status light"
   ],
   "bugs": {
-    "url": "https://github.com/todbot/node-blink1-server/issues"
+    "url": "https://github.com/902Labs/blink1-status-hub/issues"
   },
   "dependencies": {
     "express": "^4.13.3",
+    "interface-addresses": "0.0.5",
     "node-blink1": "^0.2.1",
     "node-hid": "^0.5.0",
-    "parse-color": "^1.0.0",
+    "parse-color": "^1.0.0"
+  },
+  "devDependencies": {
     "supervisor": "^0.10.0"
   }
 }
