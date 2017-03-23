@@ -142,15 +142,51 @@ app.get('/blink', function(req, res) {
 
 app.get(/\/(off|clear)/, function(req, res) {
 	runCommand('#000000', .1, 0, null, res);
-});
+})
 
 app.get('/free', function(req, res) {
-	runCommand('#000000', 0, 2, null, res);
+	runCommand(
+		req.query.rgb || '#99ff99',
+		Number(req.query.time) || 1,
+		Number(req.query.ledn) || 2,
+		null,
+		res
+	);
+});;
+
+app.get('/freeish', function(req, res) {
+	runCommand(
+		req.query.rgb || '#99ccff',
+		Number(req.query.time) || 1,
+		Number(req.query.ledn) || 2,
+		null,
+		res
+	);
 });
 
 app.get('/dnd', function(req, res) {
 	runCommand(
 		req.query.rgb || '#ff3300',
+		Number(req.query.time) || 1,
+		Number(req.query.ledn) || 2,
+		null,
+		res
+	);
+});
+
+app.get('/dnd', function(req, res) {
+	runCommand(
+		req.query.rgb || '#ff3300',
+		Number(req.query.time) || 1,
+		Number(req.query.ledn) || 2,
+		null,
+		res
+	);
+});
+
+app.get('/stuff', function(req, res) {
+	runCommand(
+		req.query.rgb || '#3cc9d3',
 		Number(req.query.time) || 1,
 		Number(req.query.ledn) || 2,
 		null,
@@ -184,14 +220,22 @@ if (process.argv.length >= 2) {
 }
 
 if (process.argv.length >= 3) {
-    var ifc = process.argv[3] || 'en0';
-    host = getInterface()[ifc] || host;
+    var ifc = process.argv[3] || getInterface()['en0'];
+    host = ifc || host;
+
+	console.log(2, host);
 }
 
-var server = app.listen(port, host, function() {
-    var host = server.address().address;
-    var port = server.address().port;
-    host = (host === '::' ) ? "localhost" : host;
+console.log(process.argv);
 
-    console.log('blink1-server listening at http://%s:%s/', host, port);
+var server = app.listen(port, host, function() {
+
+	var host = server.address().address;
+	var port = server.address().port;
+
+	console.warn('debugging', port, host);
+
+	host = (host === '::' ) ? "localhost" : host;
+
+	console.log('blink1-server listening at http://%s:%s/', host, port);
 });
